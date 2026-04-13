@@ -30,7 +30,7 @@ jobs:
           mvn clean install -DskipTests
 
       - name: Build Chess Engine
-        run: mvn clean package
+        run: mvn clean package -P ci
 
       - name: Sanitize PR title for artifact name
         id: sanitize
