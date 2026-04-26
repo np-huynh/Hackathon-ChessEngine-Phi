@@ -1,7 +1,7 @@
 package sopra.steria;
 
 /**
- * Hello world!
+ * Chess Engine Application
  *
  */
 public class App 

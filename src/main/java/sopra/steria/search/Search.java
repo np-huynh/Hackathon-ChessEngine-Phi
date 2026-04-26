@@ -130,6 +130,10 @@ public class Search {
 
     private boolean shouldStop() {
         if (stop) return true;
+        if (Thread.currentThread().isInterrupted()) {
+            stop = true;
+            return true;
+        }
         stop = setting.timeLimit() > 0 && getTimeTakenMillis() >= setting.timeLimit();
         return stop;
     }
