@@ -51,7 +51,9 @@ mvn clean install
 ```
 mvn clean package
 ```
-5. Copy the generated jar to the `test-sprt/engines` directory. Copy it again and remove the '-SNAPSHOT' from the name.
+5. Copy the jar twice to test-sprt/engines/:
+  - One as `Hackathon-ChessEngine-1.0-SNAPSHOT.jar` (your development version)
+  - One as `Hackathon-ChessEngine-1.0.jar` (your base version)
 6. Run the SPRT tests to make sure everything is working:
 ```shell
 docker compose up --build
