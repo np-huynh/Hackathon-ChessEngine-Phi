@@ -34,18 +34,23 @@ public class Search {
         SearchResult bestResult = new SearchResult();
         bestResult.setScore(-INF);
 
+
         for (int depth = 1; depth <= setting.maxDepth(); depth++) {
-            SearchResult result = searchDepth(board, depth);
+            try {
+                SearchResult result = searchDepth(board, depth);
+                bestResult = result;
 
-            if (shouldStop()) break;
+                checkStop();
 
-            bestResult = result;
+                long elapsed = getTimeTakenMillis();
+                String pv = result.getBestMove() != null ? result.getBestMove() : "";
+                System.out.println("info depth " + depth + " score cp " + result.getScore() + " time " + elapsed + " pv " + pv);
 
-            long elapsed = getTimeTakenMillis();
-            String pv = result.getBestMove() != null ? result.getBestMove() : "";
-            System.out.println("info depth " + depth + " score cp " + result.getScore() + " time " + elapsed + " pv " + pv);
+                if (isDecisive(result)) break;
+            } catch (SearchInterruptedException e) {
+                break;
+            }
 
-            if (isDecisive(result)) break;
         }
 
         bestResult.setTimeTakenMillis(getTimeTakenMillis());
@@ -63,7 +68,7 @@ public class Search {
         BMove[] moves = new MoveGenerator(board).generateMoves(false);
 
         for (BMove move : moves) {
-            if (shouldStop()) break;
+            checkStop();
 
             board.makeMove(move, true);
             int score = -negamax(board, depth - 1, -beta, -alpha, 1);
@@ -84,7 +89,9 @@ public class Search {
     private int negamax(BBoard board, int depth, int alpha, int beta, int ply) {
         nodes++;
 
-        if (shouldStop())  return 0;
+        if (isNthNode(1023))
+            checkStop();
+
         if (depth <= 0) return evaluator.evaluate(board);
 
         int bestScore = -INF;
@@ -120,17 +127,28 @@ public class Search {
         return bestScore;
     }
 
+    private boolean isNthNode(int n) {
+        return (nodes & n) == 0;
+    }
+
     private boolean isDecisive(SearchResult result) {
-        return Math.abs(result.getScore()) >= MATE_SCORE - setting.maxDepth();
+        return Math.abs(result.getScore()) >= MATE_SCORE - result.getDepth();
     }
 
     private long getTimeTakenMillis() {
         return System.currentTimeMillis() - startTime;
     }
 
-    private boolean shouldStop() {
-        if (stop) return true;
-        stop = setting.timeLimit() > 0 && getTimeTakenMillis() >= setting.timeLimit();
-        return stop;
+    private void checkStop() {
+        if (stop) throw new SearchInterruptedException();
+        if (Thread.currentThread().isInterrupted()) {
+            stop = true;
+            throw new SearchInterruptedException();
+        }
+
+        if (setting.timeLimit() > 0 && getTimeTakenMillis() >= setting.timeLimit()) {
+            stop = true;
+            throw new SearchInterruptedException();
+        }
     }
 }

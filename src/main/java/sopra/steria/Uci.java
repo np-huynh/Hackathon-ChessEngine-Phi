@@ -3,6 +3,8 @@ package sopra.steria;
 import knight.clubbing.core.BBoard;
 import knight.clubbing.core.BMove;
 import knight.clubbing.movegen.MoveGenerator;
+import knight.clubbing.movegen.PrecomputedMoveData;
+import knight.clubbing.movegen.magic.PrecomputedMagics;
 import sopra.steria.ordering.BadMoveOrderer;
 import sopra.steria.search.Search;
 import sopra.steria.search.SearchResult;
@@ -32,6 +34,14 @@ public class Uci {
 
     public Uci(boolean enableLogging) {
         this.enableLogging = enableLogging;
+
+        initEngine();
+    }
+
+    private static void initEngine() {
+        PrecomputedMoveData.getInstance();
+        @SuppressWarnings("unused")
+        var unused = PrecomputedMagics.ROOK_MAGICS;
     }
 
     public Uci() {

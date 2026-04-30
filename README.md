@@ -9,7 +9,6 @@ For competing, fork this repository. Please refer to the [Repository use for hac
 * [Use of Repository](#use-of-repository)
   * [Setup](#setup)
   * [Workflow engine development](#workflow-engine-development)
-  * [Turning in your work](#turning-in-your-work)
   * [Repository structure](#repository-structure)
     * [Engine code](#engine-code)
     * [SPRT folder](#sprt-folder)
@@ -34,9 +33,6 @@ Restrictions:
  
 Have fun and be creative!
 
-
-
-
 # Use of Repository
 Everything to develop this chess engine.
 Prerequisites:
@@ -55,26 +51,24 @@ mvn clean install
 ```
 mvn clean package
 ```
-5. Copy the generated jar to the `test-sprt/engines` directory. Copy it again and remove the '-SNAPSHOT' from the name.
+5. Copy the jar twice to test-sprt/engines/:
+  - One as `Hackathon-ChessEngine-1.0-SNAPSHOT.jar` (your development version)
+  - One as `Hackathon-ChessEngine-1.0.jar` (your base version)
 6. Run the SPRT tests to make sure everything is working:
 ```shell
 docker compose up --build
-# or podman:
+# or
 podman compose up --build
 ```
-7. You should see matches running, then you are ready to start developing your engine!
+7. Once you see matches running and results, you can stop the containers. You are ready to begin!
 
 ## Workflow engine development
-1. Make sure you have base version built and working with SPRT tests. (see above)
-2. Make changes and improvements to the engine.
+1. Make sure you have a base version built and working with SPRT tests. (see above)
+2. Make your changes to the engine.
 3. Build the new version and copy the jar to the `test-sprt/engines` directory. 
-4. Now you have two versions of the engine, make sure the docker-compose.yml points to the correct version-tags, see [sprt test paramaters](#test_sprtsh-parameters).
+4. Make sure the docker-compose.yml points to the correct version-tags, first one to the base- and second to change version, see [sprt test paramaters](#test_sprtsh-parameters).
 5. Run the SPRT tests to see if it improved the engine. See [Using SPRT tests](#using-sprt-tests) for instructions.
 6. If it improved, commit the changes.
-
-## Turning in your work
-To turn in your work, create a pull request to the original repository before the deadline.
-A description of your changes and improvements is welcome in the pull request.
 
 ## Repository structure
 Repository can be divided into two main parts: engine code and sprt folder.
@@ -98,12 +92,10 @@ The `test-sprt` folder contains everything related to the SPRT testing of the en
 - `sprt_presests.ini`: Presets for SPRT test configs.*
 - `output/games.pgn`: Output file for games played after running SPRT tests.
 
-
-
 # Development
 The goal of this hackathon is to learn chess engine development and have fun improving the engine.
 ## Guidelines
-In order to decide what to implement in your engine, you should do it step by step and slowly challenge yourself more. Covering basics first is important to understanding and working of an engine.
+In order to decide what to implement in your engine, I recommend you do it step by step and slowly challenge yourself more.
 <br/>
 To categorize the steps there are: fundamental, intermediate and advanced steps.
 ### Fundamental
@@ -136,12 +128,10 @@ To categorize the steps there are: fundamental, intermediate and advanced steps.
 - [Sebasian Lague's Chess Engine Video's (Episode 1 & 2)](https://www.youtube.com/watch?v=U4ogK0MIzqk&list=PLFt_AvWsXl0cvHyu32ajwh2qU1i6hl77c)
 - Google for topics you want to understand better
 - LLM's can be helpful to understand concepts. Don't copy or trust them blindly.
-- Ask me for help.
 
 ## SPRT testing
-Sequential Probability Ratio Testing (SPRT) is a statistical test method to compare two versions of a chess engine to determine if one is significantly better than the other.
-In other words: test if your changes improved the engine or not.
-You can have it run games between base and new version until conclusion is reached.
+SPRT tests are used to see if your changes improved the engine or not.
+It runs games between base and new version until conclusion is reached.
 
 ### Using SPRT tests
 To run the SPRT tests, first build the engine jar you want to test. 
@@ -167,3 +157,17 @@ The docker image runs the `test_sprt.sh` as entrypoint with 3 parameters:
 - $3: sprt_presets.ini preset name (default: 'default')
 
 In the docker-compose.yml file you can change these parameters.
+
+# Bonus
+
+## Profiles
+There are 2 additional profiles defined:
+- `ci`: for consistent CI builds.
+- `strength`: for testing strength of the engine with bestmove puzzles.
+- default: doesn't run strength tests.
+
+Running strength tests:
+```shell
+mvn test -Pstrength
+```
+Note: they don't have to pass, more an indication of strength.

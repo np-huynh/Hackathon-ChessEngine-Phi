@@ -18,7 +18,7 @@ PGNOUT="$WORK_DIR/output/games.pgn"
 CONFIG_FILE="$WORK_DIR/sprt_presets.ini"
 
 [[ -f "$ENGINE1" ]] && echo "✓ Engine 1 found" || { echo "✗ Engine 1 missing: $ENGINE1"; exit 1; }
-[[ -f "$ENGINE2" ]] && echo "✓ Engine 2 found" || { echo "✗ Engine 2 missing: $ENGINE1"; exit 1; }
+[[ -f "$ENGINE2" ]] && echo "✓ Engine 2 found" || { echo "✗ Engine 2 missing: $ENGINE2"; exit 1; }
 [[ -f "$CONFIG_FILE" ]] || { echo "✗ Config file missing: $CONFIG_FILE"; exit 1; }
 
 : > "$PGNOUT"
@@ -49,7 +49,7 @@ echo "Time control: $TC, Games: $GAMES, Concurrency: $CONCURRENCY"
   -event "Hackathon SPRT $INPUT_ARG1 vs $INPUT_ARG2" \
   -engine cmd=java arg=-jar arg="$ENGINE2" proto=uci name="Engine_change_v$INPUT_ARG2" \
   -engine cmd=java arg=-jar arg="$ENGINE1" proto=uci name="Engine_base_v$INPUT_ARG1" \
-  -each tc=$TC -games $GAMES -concurrency $CONCURRENCY -wait 2000 \
+  -each tc=$TC -games $GAMES -concurrency $CONCURRENCY -wait 10 \
   -sprt elo0="$elo0" elo1="$elo1" alpha="$alpha" beta="$beta" \
   -openings file=8moves_v3.pgn format=pgn order=random \
   -pgnout "$PGNOUT" min fi

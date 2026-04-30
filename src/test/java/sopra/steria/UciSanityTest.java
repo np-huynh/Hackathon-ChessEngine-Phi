@@ -1,9 +1,6 @@
 package sopra.steria;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -110,7 +107,7 @@ public class UciSanityTest {
      * Requirement of (baseline) engine: UCI should work with standard procedure including go
      */
     @Test
-    @Disabled("Unreliable in pipeline")
+    @Tag(TestTags.UNRELIABLE)
     void testStartProcedure_withGo() {
         uci.handleCommand("uci");
         uci.handleCommand("isready");
@@ -168,7 +165,7 @@ public class UciSanityTest {
      * Requirement of (baseline) engine: Should respect time control
      */
     @Test
-    @Disabled("Unreliable in pipeline")
+    @Tag(TestTags.UNRELIABLE)
     void testTimeControl() {
         // Test white to move with normal time
         uci.handleCommand("position startpos");

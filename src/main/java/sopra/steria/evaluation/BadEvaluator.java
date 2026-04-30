@@ -12,7 +12,7 @@ public class BadEvaluator implements Evaluator {
         // Me take opponent material good
         int whiteMaterial = PIECE_VALUE * Long.bitCount(board.getColorBitboard(BBoard.whiteIndex));
         int blackMaterial = PIECE_VALUE * Long.bitCount(board.getColorBitboard(BBoard.blackIndex));
-        score += (int) (whiteMaterial * 0.5 - blackMaterial);
+        score += whiteMaterial - blackMaterial;
 
         return board.isWhiteToMove() ? score : -score;
     }

@@ -71,7 +71,7 @@ jobs:
             **[Click here to download: \`hackathon-engine_${artifactName}\`](${artifactUrl})**
             
             ---
-            <sub>Build: [#${runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}) | Commit: ${sha.substring(0, 7)}</sub>`;
+            <sub>Build: [#${runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}) | Commit: ${sha.substring(0, 7)} | Last updated: ${new Date().toUTCString()}</sub>`;
             
             // Check if we already commented
             const { data: comments } = await github.rest.issues.listComments({
