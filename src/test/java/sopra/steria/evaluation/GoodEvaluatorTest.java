@@ -1,9 +1,11 @@
 package sopra.steria.evaluation;
 
 import knight.clubbing.core.BBoard;
+import knight.clubbing.core.BPiece;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GoodEvaluatorTest {
 
@@ -16,6 +18,18 @@ class GoodEvaluatorTest {
         int actual = new GoodEvaluator().evaluate(board);
 
         assertThat(actual).isEqualTo(5);
+    }
+
+    @Test
+    void should_correspond_with_PST_white(){
+        // Source: https://lichess.org/editor/8/8/1B6/8/8/7N/8/8_w_-_-_0_1?color=white
+        // -30 knight, 10 for bishop
+
+        BBoard board = new BBoard("8/8/1B6/8/8/7N/8/8 w - - 0 1");
+
+        int whitePoints = new GoodEvaluator().determinePointsPosition(board, BPiece::isWhite);
+
+        assertEquals(-20, whitePoints);
     }
 
 }

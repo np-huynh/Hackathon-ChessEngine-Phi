@@ -1,0 +1,6 @@
+in: uci
+out: id name Hackathon Chess Engine
+out: id author John Doe
+out: uciok
+in: isready
+out: readyok
