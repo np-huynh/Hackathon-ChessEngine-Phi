@@ -1,4 +1,4 @@
-FROM ghcr.io/rpjvanaert/hackathon-chessengine-base:latest
+FROM --platform=linux/amd64 ghcr.io/rpjvanaert/hackathon-chessengine-base:latest
 
 WORKDIR /app
 
